@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CartProductItem } from 'src/app/models/CartProductItem';
+import { CartService } from 'src/app/services/cart.service';
 import { Product } from 'src/app/models/Product';
 import { ProductService } from 'src/app/services/product.service';
-import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-product-item-detail',
@@ -10,37 +11,41 @@ import { CartService } from 'src/app/services/cart.service';
   styleUrls: ['./product-item-detail.component.css'],
 })
 export class ProductItemDetailComponent {
-  options: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   product: Product;
-  queryProductId: number;
-  hasProduct: boolean;
+  selectedProductId: number;
   quantity: number = 1;
+  
+  isInStock: boolean;
+  selectOptions: number[] = [1, 2, 3, 4, 5];
 
   constructor(
-    private activatedRoute: ActivatedRoute,
-    private productService: ProductService,
-    private cartService: CartService
+      private activatedRoute: ActivatedRoute,
+      private productService: ProductService,
+      private cartService: CartService
   ) {
     this.product = new Product();
-    this.queryProductId = 0;
-    this.hasProduct = false;
+    this.isInStock = false;
+    this.selectedProductId = 0;
   }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe((res) => {
-      this.queryProductId = Number(res['id']);
+    // Init inbound navigate
+    this.activatedRoute.params.subscribe((response) => {
+      this.selectedProductId = Number(response['id']);
     });
 
-    this.productService.getProducts().subscribe((res) => {
-      let foundProduct = res.find((item) => item.id === this.queryProductId);
-      if (foundProduct) {
-        this.product = foundProduct;
-        this.hasProduct = true;
+    this.productService.getProducts().subscribe((response) => {
+
+      // Get product and check product in stock
+      let selectedProduct = response.find((item) => item.id === this.selectedProductId);
+      if (selectedProduct) {
+        this.isInStock = true;
+        this.product = selectedProduct;
       }
     });
   }
 
-  addToCart(): void {
-    this.cartService.addToCart(this.queryProductId, Number(this.quantity));
+  addItemToCart(): void {
+    this.cartService.addItemToCart(this.selectedProductId, Number(this.quantity));
   }
 }

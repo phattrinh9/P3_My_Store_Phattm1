@@ -2,14 +2,14 @@ export class Product {
   id: number;
   name: string;
   price: number;
-  url: string;
   description: string;
+  url: string;
 
   constructor() {
-    this.id = 1;
-    this.name = '';
-    this.price = 0.0;
-    this.url = '';
-    this.description = '';
+    this.id = 0;
+    this.name = 'new product name';
+    this.price = 0.00;
+    this.description = 'new product description';
+    this.url = 'new product url';
   }
 }

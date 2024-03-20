@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CartProductItem } from 'src/app/models/CartProductItem';
 import { Product } from 'src/app/models/Product';
-import { CartItem } from 'src/app/models/CartItem';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-product-item',
@@ -9,9 +9,9 @@ import { CartItem } from 'src/app/models/CartItem';
 })
 export class ProductItemComponent {
   @Input() product: Product;
-  selectOptions: number[] = [1, 2, 3, 4, 5, 6];
+  @Output() addToCart: EventEmitter<CartProductItem> = new EventEmitter();
+  selectOptions: number[] = [1, 2, 3, 4, 5];
   quantity: number = 1;
-  @Output() addCart: EventEmitter<CartItem> = new EventEmitter();
 
   constructor() {
     this.product = {
@@ -23,10 +23,10 @@ export class ProductItemComponent {
     };
   }
 
-  addToCart(productId: number): void {
-    const cartItem = new CartItem();
-    cartItem.productId = productId;
-    cartItem.quantity = this.quantity;
-    this.addCart.emit(cartItem);
+  addItemToCart(productId: number): void {
+    const cartProductItem = new CartProductItem();
+    cartProductItem.productId = productId;
+    cartProductItem.quantity = this.quantity;
+    this.addToCart.emit(cartProductItem);
   }
 }

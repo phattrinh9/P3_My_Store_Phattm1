@@ -1,12 +1,12 @@
 <div *ngIf="order === undefined" class="alert alert-warning" role="alert">
-    You don't have any order yet!
+    Empty order!
 </div>
 <div class="confirmation-container" *ngIf="order !== undefined">
     <div class="confirmation-items">
-        <h2 class="confirmation-header confirmation-item">Success!🏆🏆🏆</h2>
+        <h2 class="confirmation-header confirmation-item">Success! </h2>
         <p class="confirmation-item">Thank you, <strong>{{order.name}}</strong>!</p>
         <p class="confirmation-item">Your <strong>${{order.amount}}</strong> order is confirmed!</p>
-        <p class="confirmation-item">Please allow 1-3 business days(s) for shipping</p>
-        <a routerLink="/" class="link-primary">&#8592; Back to product list</a>
+        <p class="confirmation-item">Your order need a couple of day for shipping</p>
+        <a routerLink="/" class="link-dark">Back to product list</a>
     </div>
 </div>

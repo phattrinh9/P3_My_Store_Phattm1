@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CartItem } from 'src/app/models/CartItem';
+import { CartProductItem } from 'src/app/models/CartProductItem';
 import { Order } from 'src/app/models/Order';
 import { Router } from '@angular/router';
 import { CartService } from 'src/app/services/cart.service';
@@ -10,7 +10,7 @@ import { CartService } from 'src/app/services/cart.service';
   styleUrls: ['./cart.component.css'],
 })
 export class CartComponent {
-  cart: CartItem[] = [];
+  cart: CartProductItem[] = [];
   fullname: string = '';
   address: string = '';
   creditCard: string = '';
@@ -23,22 +23,28 @@ export class CartComponent {
     this.calculateTotalAmount();
   }
 
-  onQuantityChange(cartItem: CartItem): void {
-    if (cartItem.quantity == 0) {
+  // submit shopping cart
+  onSubmit(): void {
+    let order = new Order(this.fullname, this.address, this.total, this.creditCard);
+    this.cartService.createOrder(order);
+
+    // naviagte to confirmation page when success shopping
+    this.router.navigateByUrl('/confirmation');
+  }
+
+  // trigger when number of item change in cart
+  onQuantityChange(cartProductItem: CartProductItem): void {
+    if (cartProductItem.quantity == 0) {
       let index = this.cart.findIndex(
-        (item) => item.productId === cartItem.productId
+        (item) => item.productId === cartProductItem.productId
       );
       this.cart.splice(index, 1);
-      alert('Removed from cart!');
+      alert('This product is removed from cart!');
     }
     this.calculateTotalAmount();
   }
 
-  onSubmit(): void {
-    let order = new Order(this.fullname, this.address, this.total);
-    this.cartService.createOrder(order);
-    this.router.navigateByUrl('/confirmation');
-  }
+ 
 
   private calculateTotalAmount(): void {
     this.total = 0;

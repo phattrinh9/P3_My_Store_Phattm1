@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CartItem } from '../models/CartItem';
+import { CartProductItem as CartProductItem } from '../models/CartProductItem';
 import { Order } from '../models/Order';
 import { ProductService } from './product.service';
 
@@ -7,28 +7,31 @@ import { ProductService } from './product.service';
   providedIn: 'root',
 })
 export class CartService {
-  cart: CartItem[] = [];
+  cart: CartProductItem[] = [];
   order: Order | undefined;
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService) { }
 
-  getCart(): CartItem[] {
+  getCart(): CartProductItem[] {
     return this.cart;
   }
 
-  addToCart(productId: number, quantity: number): void {
+  addItemToCart(productId: number, quantity: number): void {
 
     let isProductExistInCart = this.cart.find((item) => item.productId === productId);
 
     // change quantity 
-    if (isProductExistInCart) { 
+    if (isProductExistInCart) {
       isProductExistInCart.quantity = isProductExistInCart.quantity + quantity;
     } else {
       this.productService.getProducts().subscribe((response) => {
         //find product that need to add new product to cart
-        let selectItem = response.find((product) => product.id === productId);
+        let selectItem = response.find((product) => productId === product.id);
         if (selectItem) {
-          let addCartItem = new CartItem();
+
+          let addCartItem = new CartProductItem();
+
+          // Init and add new product item into cart
           addCartItem.productId = productId;
           addCartItem.productURL = selectItem.url;
           addCartItem.productName = selectItem.name;
@@ -38,12 +41,13 @@ export class CartService {
         }
       });
     }
-    alert('Added items!');
+    alert('Items has added to cart!');
   }
 
   createOrder(order: Order): void {
-    this.order = order;
+    // create order with item in cart
     this.cart = [];
+    this.order = order;
   }
 
   getOrder(): Order | undefined {

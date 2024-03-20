@@ -7,5 +7,5 @@
     <select class="select-input" [(ngModel)]="quantity">
         <option *ngFor="let option of selectOptions">{{option}}</option>
     </select>
-    <button class="btn btn-primary d-block" (click)="addToCart(product.id)">Add to cart</button>
+    <button class="btn btn-success d-block" (click)="addItemToCart(product.id)">Add to cart</button>
 </div>

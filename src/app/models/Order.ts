@@ -1,11 +1,14 @@
 export class Order {
   name: string;
-  address: string;
   amount: number;
+  address: string;
+  creditCard: string;
 
-  constructor(name: string, address: string, amount: number) {
+  constructor(name: string, address: string, amount: number, creditCard: string) {
     this.name = name;
-    this.address = address;
     this.amount = amount;
+    this.address = address;
+    this.creditCard = creditCard;
+
   }
 }
