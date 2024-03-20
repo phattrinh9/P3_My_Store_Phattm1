@@ -1,0 +1,31 @@
+<div *ngIf="cart.length === 0" class="alert alert-warning" role="alert">
+    Your cart is empty!
+</div>
+
+<div class="cart-container" *ngIf="cart.length !== 0">
+    <div class="cart-item-details cart-panel">
+        <div *ngFor="let cartItem of cart" class="cart-item">
+            <img [src]="cartItem.productURL" class="img" alt="Product image">
+            <div class="cart-item-details">
+                <h3>{{ cartItem.productName }}</h3>
+                <p>$ {{ cartItem.productPrice }}</p>
+                <input name="quantity" [(ngModel)]="cartItem.quantity" [value]="cartItem.quantity"
+                    type="number" class="number-input" (ngModelChange)="onQuantityChange(cartItem)" />
+            </div>
+        </div>
+        <h2>Total: $ {{ total }}</h2>
+    </div>
+    <form #form="ngForm" class="cart-panel" (ngSubmit)="onSubmit()">
+        <label class="form-label" for="fullname">Full name</label>
+        <input id="fullname" class="form-control form-margin" name="fullname" placeholder="(Your Full Name)"
+            minlength="2" required [(ngModel)]="fullname">
+        <label class="form-label" for="address">Address</label>
+        <input id="address" class="form-control form-margin" name="address" placeholder="(At Least 10 Characters)"
+            minlength="10" required [(ngModel)]="address">
+        <label class="form-label" for="creditCard">Credit card number</label>
+        <input id="creditCard" class="form-control form-margin" name="creditCard"
+            placeholder="(eg: XXXX XXXX XXXX)" pattern="\d{12}" required [(ngModel)]="creditCard">
+        <p class="fw-light">We'll never share your payment details with anyone else.</p>
+        <button [disabled]="form.invalid" class="btn btn-primary" type="submit">Submit</button>
+    </form>
+</div>

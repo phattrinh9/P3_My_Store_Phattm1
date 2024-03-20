@@ -1,0 +1,16 @@
+<div *ngIf="!hasProduct" class="alert alert-danger" role="alert">
+    This product does not exist!
+</div>
+<div class="detail-container" *ngIf="hasProduct">
+    <img class="img" src={{product.url}} alt="product image">
+    <div class="detail-item">
+        <h2>{{product.name}}</h2>
+        <p>$ {{product.price}}</p>
+        <p>{{product.description}}</p>
+        <select class="select-input" [(ngModel)]="quantity">
+            <option *ngFor="let option of options">{{option}}</option>
+        </select>
+        <button class="btn btn-primary d-block" (click)="addToCart()">Add to cart</button>
+        <a routerLink="/" class="back-link">&#8592; Back to product list</a>
+    </div>
+</div>
